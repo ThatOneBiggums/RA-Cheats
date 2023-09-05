@@ -10,12 +10,14 @@ VPN_IFACE_IP=$(ifconfig $VPN_IFACE | awk '{print $2}' | egrep -o '([0-9]+\.){3}[
 # Check if VPN interface is up and exit if it isn't
 if [ -z "$VPN_IFACE_IP" ]
 then
+        mullvad relay set tunnel-protocol wireguard
         mullvad connect
         sleep 3
         VPN_IFACE_IP=$(ifconfig $VPN_IFACE | awk '{print $2}' | egrep -o '([0-9]+\.){3}[0-9]+')
 else
         mullvad disconnect
         mullvad relay set location us sjc
+        mullvad relay set tunnel-protocol wireguard
         mullvad connect
         sleep 3
         VPN_IFACE_IP=$(ifconfig $VPN_IFACE | awk '{print $2}' | egrep -o '([0-9]+\.){3}[0-9]+')
